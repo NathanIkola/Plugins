@@ -37,9 +37,9 @@ void Plugin::PluginManager::LoadPlugin(const char* filename) noexcept
 	FARPROC _dllEntry = GetProcAddress(dll, DLLENTRY);
 
 	// check that the version matches
-	version (*dllVersion)() = reinterpret_cast<version (*)()>(_dllVersion);
-	version v = dllVersion();
-	assert(v >= MIN_VERSION);
+	bool (*dllVersion)(float) = reinterpret_cast<bool (*)(float)>(_dllVersion);
+	// ensure the plugin is compatible
+	assert(dllVersion(VERSION));
 
 	// now that we know it is good, add it to our list
 	// of loaded plugins

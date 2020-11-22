@@ -29,9 +29,8 @@
 #define DLLENTRY	"dll_register"
 #define DLLEXIT		"dll_unregister"
 
-// the lowest version number that can
-// still be loaded for this application
-#define MIN_VERSION 0.0
+// the version this plugin manager was designed for
+#define VERSION 0.0
 
 namespace Plugin
 {
