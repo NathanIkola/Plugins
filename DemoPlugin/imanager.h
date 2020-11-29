@@ -16,7 +16,7 @@
 #include <vector>
 
 // the version of the plugin manager this was designed for
-#define VERSION		0;
+#define VERSION		0.0;
 
 namespace Plugin
 {
@@ -96,6 +96,9 @@ namespace Plugin
 
 // version getter for the plugin manager
 #define GET_VERSION()	PLUGIN_EXPORT float dll_version() { return VERSION; }
+
+// clean this up so someone else may use VERSION later
+#undef VERSION
 
 // dll entry point, register handles here
 #define DLL_MAIN(M)		PLUGIN_EXPORT void dll_register(Plugin::IManager M)

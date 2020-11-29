@@ -30,12 +30,6 @@
 #define DLLENTRY	"dll_register"
 #define DLLEXIT		"dll_unregister"
 
-
-// minimum version this is compatible with
-#define MIN_VERSION 0.0
-// maximum version this is compatible with
-#define MAX_VERSION 0.0
-
 namespace Plugin
 {
 	// the version is represented by a float: the integral
@@ -46,6 +40,14 @@ namespace Plugin
 	class PluginManager final
 	{
 	public:
+		//************************************
+		// Version information
+		//************************************
+		// current version of the plugin manager
+		const float VERSION = 0.0;
+		// minimum version this plugin manager is compatible with
+		const float MIN_VERSION = 0.0;
+
 		//************************************
 		// Static instance getter
 		//************************************

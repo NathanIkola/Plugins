@@ -43,7 +43,7 @@ void Plugin::PluginManager::LoadPlugin(const char* filename) noexcept
 	// check that the version matches
 	float (*dllVersion)() = reinterpret_cast<float (*)()>(_dllVersion);
 	// ensure the plugin is compatible
-	assert(dllVersion() <= MAX_VERSION && dllVersion() >= MIN_VERSION);
+	assert(dllVersion() <= VERSION && dllVersion() >= MIN_VERSION);
 
 	// now that we know it is good, add it to our list
 	// of loaded plugins
