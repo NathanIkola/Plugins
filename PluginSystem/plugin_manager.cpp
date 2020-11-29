@@ -10,13 +10,15 @@
 #include "plugin_manager.h"
 
 #include <Windows.h>
-#include "manager_model.h"
 
 //************************************
 // Load in the plugin at filename
 //************************************
 void Plugin::PluginManager::LoadPlugin(const char* filename) noexcept
 {
+	// double check our input
+	assert(filename != nullptr);
+
 	// double check that the filename is a DLL
 	uint8_t state = 0;
 	const char* cursor = filename;
@@ -49,7 +51,7 @@ void Plugin::PluginManager::LoadPlugin(const char* filename) noexcept
 
 	// run the register method
 	void (*dllEntry)(IManager) = reinterpret_cast<void (*)(IManager)>(_dllEntry);
-	dllEntry(IManager(new ManagerModel<PMgr>(PMgr::GetInstance())));
+	dllEntry(PMgr::GetInstance());
 }
 
 //**************************************
@@ -58,13 +60,16 @@ void Plugin::PluginManager::LoadPlugin(const char* filename) noexcept
 //**************************************
 void Plugin::PluginManager::UnloadPlugin(void* plugin) noexcept
 {
+	// double check the input
+	assert(plugin != nullptr);
+
 	// cast our plugin back into an HINSTANCE
 	HINSTANCE dll = static_cast<HINSTANCE>(plugin);
 
 	// run this plugin's cleanup method
 	FARPROC _dllExit = GetProcAddress(dll, DLLEXIT);
 	assert(_dllExit != nullptr);
-	reinterpret_cast<void(*)(IManager)>(_dllExit)(IManager(new ManagerModel<PMgr>(PMgr::GetInstance())));
+	reinterpret_cast<void(*)(IManager)>(_dllExit)(PMgr::GetInstance());
 
 	// make sure the plugin was successfully freed
 	assert(FreeLibrary(dll));

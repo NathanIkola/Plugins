@@ -23,6 +23,7 @@
 #include <unordered_map>
 
 #include "imanager.h"
+#include "manager_model.h"
 #include "plugin_handle.h"
 
 #define DLLVERSION	"dll_version"
@@ -125,7 +126,7 @@ namespace Plugin
 		//************************************
 		// Cast to IManager
 		//************************************
-		inline operator IManager() { return IManager(*this); }
+		inline operator IManager() { return IManager(new ManagerModel<PluginManager>(*this)); }
 
 		//************************************
 		// Execute all plugin functions for
