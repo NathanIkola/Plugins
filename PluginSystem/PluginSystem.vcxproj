@@ -143,6 +143,7 @@
     <ClCompile Include="plugin_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="manager_model.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="imanager.h" />
     <ClInclude Include="plugin_handle.h" />

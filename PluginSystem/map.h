@@ -27,28 +27,39 @@ public:
 
 	void Draw(int w, int h, int seed = -1)
 	{
-		// generate a seed if necessary
-		if (seed == -1)
-			seed = rand();
-
-		// execute any plugins that affect the seed
-		// this member function explicitly handles the pattern of
-		// x = func(x), where func is defined as X func(X x)
-		// if no plugins handle this, then it returns x unchanged
-		seed = Plugin::PMgr::GetInstance().ExecutePlugins("seedGeneration", seed);
-
-		// randomize that many times
-		for (int i = 0; i < seed; ++i) (void)rand();
-
-		// start to generate our map
-		for (int y{ 0 }; y < h; ++y)
+		// allow plugins to hijack the rendering
+		if (Plugin::PMgr::GetInstance().GetHandle("drawOverride").Pointers().size() != 0)
 		{
-			for (int x{ 0 }; x < w; ++x)
+			for (auto f : Plugin::PMgr::GetInstance().GetPluginFuncs<void(*)(int, int, int)>("drawOverride"))
 			{
-				// put the random symbol in our map
-				std::cout << m_symbols[rand() % m_symbols.size()];
+				f(w, h, seed);
 			}
-			std::cout << '\n';
+		}
+		else
+		{
+			// generate a seed if necessary
+			if (seed == -1)
+				seed = rand();
+
+			// execute any plugins that affect the seed
+			// this member function explicitly handles the pattern of
+			// x = func(x), where func is defined as X func(X x)
+			// if no plugins handle this, then it returns x unchanged
+			seed = Plugin::PMgr::GetInstance().ExecutePlugins("seedGeneration", seed);
+
+			// randomize that many times
+			for (int i = 0; i < seed; ++i) (void)rand();
+
+			// start to generate our map
+			for (int y{ 0 }; y < h; ++y)
+			{
+				for (int x{ 0 }; x < w; ++x)
+				{
+					// put the random symbol in our map
+					std::cout << m_symbols[rand() % m_symbols.size()];
+				}
+				std::cout << '\n';
+			}
 		}
 	}
 private:

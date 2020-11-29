@@ -9,6 +9,7 @@
 //**************************************
 #include "dllmain.h"
 
+#include <iostream>
 #include <vector>
 
 //**************************************
@@ -29,6 +30,9 @@ int edit_seed(int seed)
 	return 0;
 }
 
+// an overriden draw method for the map
+void draw_custom_map(int w, int h, int seed);
+
 //**************************************
 // The minimum function requirements
 // that every plugin needs
@@ -37,6 +41,7 @@ int edit_seed(int seed)
 // define our register method
 DLL_MAIN(manager)
 {
+	//manager.Register("drawOverride", draw_custom_map);
 	manager.Register("mapSymbols", chars);
 	manager.Register("seedGeneration", edit_seed);
 }
@@ -44,6 +49,12 @@ DLL_MAIN(manager)
 // define our unregister method
 DLL_EXIT(manager)
 {
+	//manager.Unregister("drawOverride", draw_custom_map);
 	manager.Unregister("mapSymbols", chars);
 	manager.Unregister("seedGeneration", edit_seed);
+}
+
+void draw_custom_map(int w, int h, int seed)
+{
+	std::cout << "DLL hijacked the draw function\n";
 }

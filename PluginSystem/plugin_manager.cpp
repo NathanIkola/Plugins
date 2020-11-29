@@ -10,6 +10,7 @@
 #include "plugin_manager.h"
 
 #include <Windows.h>
+#include "manager_model.h"
 
 //************************************
 // Load in the plugin at filename
@@ -26,6 +27,7 @@ void Plugin::PluginManager::LoadPlugin(const char* filename) noexcept
 		else state = 0;
 		++cursor;
 	}
+	// did not point to a DLL
 	assert(state == 3);
 
 	// now import the dll
@@ -47,7 +49,7 @@ void Plugin::PluginManager::LoadPlugin(const char* filename) noexcept
 
 	// run the register method
 	void (*dllEntry)(IManager) = reinterpret_cast<void (*)(IManager)>(_dllEntry);
-	dllEntry(IManager(PMgr::GetInstance()));
+	dllEntry(IManager(new ManagerModel<PMgr>(PMgr::GetInstance())));
 }
 
 //**************************************
@@ -62,7 +64,7 @@ void Plugin::PluginManager::UnloadPlugin(void* plugin) noexcept
 	// run this plugin's cleanup method
 	FARPROC _dllExit = GetProcAddress(dll, DLLEXIT);
 	assert(_dllExit != nullptr);
-	reinterpret_cast<void(*)(IManager)>(_dllExit)(IManager(PMgr::GetInstance()));
+	reinterpret_cast<void(*)(IManager)>(_dllExit)(IManager(new ManagerModel<PMgr>(PMgr::GetInstance())));
 
 	// make sure the plugin was successfully freed
 	assert(FreeLibrary(dll));
