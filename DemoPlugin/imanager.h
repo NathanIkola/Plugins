@@ -15,10 +15,8 @@
 // required for std::vector
 #include <vector>
 
-// minimum version this is compatible with
-#define MIN_VERSION 0.0
-// maximum version this is compatible with
-#define MAX_VERSION 0.0
+// the version of the plugin manager this was designed for
+#define VERSION		0;
 
 namespace Plugin
 {
@@ -97,7 +95,7 @@ namespace Plugin
 #define PLUGIN_EXPORT	extern "C" __declspec(dllexport)
 
 // version getter for the plugin manager
-#define GET_VERSION()	PLUGIN_EXPORT bool dll_version(float v) { return v >= MIN_VERSION && v <= MAX_VERSION; }
+#define GET_VERSION()	PLUGIN_EXPORT float dll_version() { return VERSION; }
 
 // dll entry point, register handles here
 #define DLL_MAIN(M)		PLUGIN_EXPORT void dll_register(Plugin::IManager M)

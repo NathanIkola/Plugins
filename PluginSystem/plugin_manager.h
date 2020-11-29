@@ -30,8 +30,11 @@
 #define DLLENTRY	"dll_register"
 #define DLLEXIT		"dll_unregister"
 
-// the version this plugin manager was designed for
-#define VERSION 0.0
+
+// minimum version this is compatible with
+#define MIN_VERSION 0.0
+// maximum version this is compatible with
+#define MAX_VERSION 0.0
 
 namespace Plugin
 {
